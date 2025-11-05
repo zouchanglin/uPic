@@ -30,7 +30,8 @@ public class DiskPermissionManager {
         let osVersion = ProcessInfo.processInfo.operatingSystemVersion
         
         // macOS 26.0 需要使用临时解决方案
-        if osVersion.majorVersion == 26 && osVersion.minorVersion == 0 {
+        // if osVersion.majorVersion == 26 && osVersion.minorVersion == 0 {
+        if osVersion.majorVersion >= 26 {
             return true
         }
         
@@ -50,8 +51,12 @@ public class DiskPermissionManager {
         openPanel.canChooseDirectories = true
         openPanel.directoryURL = directoryURL
         
-        openPanel.runModal()
-        return openPanel.urls.first
+        let result = openPanel.runModal()
+        if result == .OK {
+            return openPanel.urls.first  // 用户点了确定，返回选择的URL
+        } else {
+            return nil  // 用户点了取消或按ESC，返回nil
+        }
     }
     
     private func saveBookmarkData(for workDir: URL, defaultKey: DefaultsKey<Data>) {
