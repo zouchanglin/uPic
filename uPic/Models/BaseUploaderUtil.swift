@@ -108,6 +108,7 @@ class BaseUploaderUtil {
         
         let filename = filenameComponent.lastPathComponent.deletingPathExtension
         let fileExtension = filenameComponent.pathExtension
+        let filenameMd5 = filename.toMd5()
         let now = Date()
         let calendar = Calendar.current
         let year = calendar.component(.year, from: now)
@@ -130,6 +131,7 @@ class BaseUploaderUtil {
                         .replacingOccurrences(of: "{since_second}", with: "\(sinceSecond)")
                         .replacingOccurrences(of: "{since_millisecond}", with: "\(sinceMillisecond)")
                         .replacingOccurrences(of: "{filename}", with: filename)
+                        .replacingOccurrences(of: "{md5}", with: filenameMd5)
                         .replacingOccurrences(of: "{mimetype}", with: Util.getMimeType(pathExtension: fileExtension))
                         .replacingOccurrences(of: "{random}", with: _getRrandomFileName(nil))
                         .replacingOccurrences(of: "{suffix}", with: fileExtension)
